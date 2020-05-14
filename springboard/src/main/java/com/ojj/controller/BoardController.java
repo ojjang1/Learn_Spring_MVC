@@ -1,0 +1,76 @@
+package com.ojj.controller;
+
+import org.springframework.stereotype.Controller;
+// 컨트롤러 역활을 하는거다 라고 알려주기 위해
+import org.springframework.ui.Model;
+// 스프링은 modelAndView 가 아니고 Model 이다.
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.ojj.domain.BoardVO;
+import com.ojj.service.BoardService;
+// BoardService를 불러와서 연결하기 때문에 
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Controller  // 이 클래스틑 컨트롤러 역활 클래스다
+@Log4j  // 로그값을 찍어줘
+@RequestMapping("/board/*")  //  "/board/*" 요청 url이 /board/로 시작하면 여기로 매핑
+@AllArgsConstructor  // 롬복으로 생성자를 만들어 생성자를 통한 자동주입
+public class BoardController {
+
+	private BoardService service;
+	
+	//  /board/로 들어오는 요청중 /list로 끝나면 여기로 매핑
+	@GetMapping("/list")
+	public void list(Model model) {
+		
+		log.info("list");
+		model.addAttribute("list", service.getList());
+	}
+	
+	@PostMapping("/register")
+	public String register(BoardVO board, RedirectAttributes rttr) {
+		
+		log.info("register: " + board);
+		
+		service.register(board);
+		
+		rttr.addFlashAttribute("result", board.getBno());
+		
+		return "redirect:/board/list";
+	}
+	
+	@GetMapping("/get")
+	public void get(@RequestParam("bno") Long bno, Model model) {
+		//파라미터 명 과 같이 잡아주면 바로 매개변수로 넣어준다.
+		
+		log.info("/get");
+		 model.addAttribute("board",service.get(bno));
+	}
+	
+	
+	@PostMapping("/modify")
+	public String modify(BoardVO board, RedirectAttributes rttr) {
+		log.info("modify :" + board);
+		
+		if (service.modify(board)) {
+			rttr.addFlashAttribute("result", "success");
+		}
+		return "redirect:/board/list";
+	}
+	
+	@PostMapping("/remove")
+	public String remove(@RequestParam("bno") Long bno, RedirectAttributes rttr) {
+		
+		log.info("remove..." + bno);
+		if(service.remove(bno)) {
+			rttr.addFlashAttribute("result","success");
+		}
+		return "redirect:/board/list";
+	}
+}
