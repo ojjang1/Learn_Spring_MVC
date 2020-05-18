@@ -1,5 +1,7 @@
 package com.ojj.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 // 컨트롤러 역활을 하는거다 라고 알려주기 위해
 import org.springframework.ui.Model;
@@ -31,6 +33,8 @@ public class BoardController {
 		
 		log.info("list");
 		model.addAttribute("list", service.getList());
+//		public List<BoardVO> getList();
+//		service 의 getList() 의 반환값을 확인 할것.
 	}
 	
 	@PostMapping("/register")
@@ -41,8 +45,15 @@ public class BoardController {
 		service.register(board);
 		
 		rttr.addFlashAttribute("result", board.getBno());
+		// FlashAttribute 딱 1전만 전송됨. 만약 다른메서드로 전달한다면
+		// 새로고침할때마다 데이터가 전달되는것을 방지.
 		
 		return "redirect:/board/list";
+	}
+	
+	@GetMapping("/register")
+	public void register() {
+		
 	}
 	
 	@GetMapping("/get")
