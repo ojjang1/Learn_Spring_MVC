@@ -56,12 +56,18 @@ public class BoardController {
 		
 	}
 	
-	@GetMapping("/get")
+	@GetMapping({"/get","/modify"})  //수정페이지 호출 위해 url패턴에 /modify 추가함
 	public void get(@RequestParam("bno") Long bno, Model model) {
 		//파라미터 명 과 같이 잡아주면 바로 매개변수로 넣어준다.
+		// request.getParameter('bno') 를 대체해주는것.
+		// board/get?bno='  '  로 들어오는것을 캐치해줌.
+		// url 패턴명이 바로 Model 객체 내부로 들어가서 자동 리턴해준다.
 		
-		log.info("/get");
+		log.info("/get or modify");  //수정페이지 호출 위해 url패턴에 /modify 추가함
 		 model.addAttribute("board",service.get(bno));
+		 // public BoardVO get(Long bno);
+		 // 즉 get(bno) 의 반환타입은 BoardVO 다 라는것을 확인할것
+		 // addAttribute 로 되어있는거 주의 새로고침해도 넘겨줘야하기때문에.
 	}
 	
 	
