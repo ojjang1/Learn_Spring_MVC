@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import com.jex.domain.BoardVO;
+import com.jex.domain.Criteria;
 import com.jex.mapper.BoardMapper;
 
 import lombok.AllArgsConstructor;
@@ -47,10 +48,26 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.delete(bno) == 1;
 	}
 
+//	@Override
+//	public List<BoardVO> getList() {
+//		log.info("getList() called..mapper.getList(); 호출하고 끝나면 결과값 반환 예정");
+//		return mapper.getList();
+//	}
+	
 	@Override
-	public List<BoardVO> getList() {
-		log.info("getList() called..mapper.getList(); 호출하고 끝나면 결과값 반환 예정");
-		return mapper.getList();
+	public List<BoardVO> getList(Criteria cri) {
+		
+		log.info("getList 호출됨 with criteria:" + cri);
+		
+		return mapper.getListWithPaging(cri);
+	}
+
+	
+	@Override
+	public int getTotal(Criteria cri) {
+
+		log.info("get total count 호출됨 mapper.getTotalCount(cri) 값 반환");
+		return mapper.getTotalCount(cri);
 	}
 
 }

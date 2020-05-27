@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.jex.domain.BoardVO;
+import com.jex.domain.Criteria;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -46,8 +47,9 @@ public class BoardServiceTests {
 //	@Test
 	public void testGetList() {
 		
+		Criteria cri = new Criteria();
 		System.out.println("testGetList called.....");
-		service.getList().forEach(board -> log.info(board));
+		service.getList(cri).forEach(board -> log.info(board));
 	}
 	
 //	@Test
