@@ -1,5 +1,7 @@
 package com.jex.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.jex.domain.BoardVO;
+import com.jex.domain.Criteria;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -66,7 +69,7 @@ public class BoardMapperTests {
 		log.info("DELETE COUNT: " + mapper.delete(5L));
 	}
 	
-	@Test
+//	@Test
 	public void testUpdate() {
 		
 		BoardVO board = new BoardVO();
@@ -80,5 +83,17 @@ public class BoardMapperTests {
 		
 		
 		log.info("UPDATE COUNT: " + count);
+	}
+	
+	@Test
+	public void testSearch() {
+		
+		Criteria cri = new Criteria();
+		cri.setKeyword("모달");
+//		cri.setType("TC");
+		List<BoardVO> list= mapper.getListWithPaging(cri);
+		
+		list.forEach(board -> log.info(board));
+		
 	}
 }
