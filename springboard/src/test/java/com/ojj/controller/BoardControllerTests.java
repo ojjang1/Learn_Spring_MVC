@@ -59,12 +59,12 @@ public class BoardControllerTests {
 		
 	}
 	
-//	@Test
+	@Test
 	public void testGet() throws Exception {
 		
 		log.info(mockMvc.perform(MockMvcRequestBuilders
 				.get("/board/get")
-				.param("bno", "2"))
+				.param("bno", "4"))
 				.andReturn()
 				.getModelAndView().getModelMap()
 				);
@@ -85,7 +85,7 @@ public class BoardControllerTests {
 				.getViewName();
 	}
 	
-	@Test
+//	@Test
 	public void testRemove() throws Exception {
 		//삭제전 데이터베이스에 게시물 번호 확인을 할 것
 		String resultPage = mockMvc.perform(MockMvcRequestBuilders
