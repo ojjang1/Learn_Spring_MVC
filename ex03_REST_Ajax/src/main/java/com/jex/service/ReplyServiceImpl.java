@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jex.domain.Criteria;
 import com.jex.domain.ReplyPageDTO;
 import com.jex.domain.ReplyVO;
+import com.jex.mapper.BoardMapper;
 import com.jex.mapper.ReplyMapper;
 
 import lombok.AllArgsConstructor;
@@ -19,12 +22,20 @@ public class ReplyServiceImpl implements ReplyService {
 	
 	@Setter(onMethod_ = {@Autowired})
 	private ReplyMapper mapper;
+	
+	@Setter(onMethod_ = {@Autowired})
+	private BoardMapper boardMapper;
 
+	
+	@Transactional
 	@Override
 	public int register(ReplyVO vo) {
 
 		log.info("---- resister service :" + vo);
+		log.info("------ ReplyCnt +1 " );
 		
+		boardMapper.updateReplyCnt(vo.getBno(), 1);
+				
 		return mapper.insert(vo);
 	}
 
@@ -44,9 +55,15 @@ public class ReplyServiceImpl implements ReplyService {
 		return mapper.update(vo);
 	}
 
+	@Transactional
 	@Override
 	public int remove(Long rno) {
 		log.info("---- remove service: "+ rno);
+		log.info("------ ReplyCnt -1 " );
+		
+		ReplyVO vo = mapper.read(rno);
+		boardMapper.updateReplyCnt(vo.getBno(), -1);
+		
 		return mapper.delete(rno);
 	}
 
