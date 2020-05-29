@@ -57,9 +57,12 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
-	public ReplyPageDTO getListPage(Criteria cri, Long Bno) {
-		// TODO Auto-generated method stub
-		return null;
+	public ReplyPageDTO getListPage(Criteria cri, Long bno) {
+		
+		log.info("---- getListPage service 댓글 카운트, 페이징사용 목록 반환");
+		return new ReplyPageDTO(
+				mapper.getCountByBno(bno),
+				mapper.getListWithPaging(cri, bno));
 	}
 
 }

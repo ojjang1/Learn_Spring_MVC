@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jex.domain.Criteria;
+import com.jex.domain.ReplyPageDTO;
 import com.jex.domain.ReplyVO;
 import com.jex.service.ReplyService;
 
@@ -72,14 +73,18 @@ public class ReplyController {
 	@GetMapping(value = "/pages/{bno}/{page}",
 				produces= { MediaType.APPLICATION_XML_VALUE,
 							MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<List<ReplyVO>> getList(
+	public ResponseEntity<ReplyPageDTO> getList(
 								@PathVariable("page") int page,
 								@PathVariable("bno") Long bno) {
 		
 		log.info("---- /pages/{bno}/{page} 로 getList 요청");
 		Criteria cri = new Criteria(page,10);
 		
-		return new ResponseEntity<>(service.getList(cri, bno), HttpStatus.OK);
+		log.info("---- get Reply List bno " + bno);
+		
+		log.info("---- cri" + cri);
+		
+		return new ResponseEntity<>(service.getListPage(cri, bno), HttpStatus.OK);
 	}
 	
 	

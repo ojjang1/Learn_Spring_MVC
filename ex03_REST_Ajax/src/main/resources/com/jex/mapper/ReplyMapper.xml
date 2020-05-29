@@ -23,10 +23,27 @@
 	</update>
 	
 	<select id="getListWithPaging" resultType="com.jex.domain.ReplyVO" >
-		SELECT rno, bno, reply, replyer, replyDate, updatedate
-		FROM tbl_reply
-		WHERE bno = #{bno}
-		ORDER BY rno asc
+		<![CDATA[
+		SELECT rno, bno, reply, replyer, replydate, updatedate
+		FROM
+			(
+			SELECT /*+INDEX(tbl_reply idx_reply) */ 
+				ROWNUM rn, rno, bno, reply, replyer, replyDate, updatedate
+			FROM tbl_reply
+			WHERE bno = #{bno}
+				AND rno > 0
+				AND ROWNUM <= #{cri.pageNum} * #{cri.amount}
+			)
+			WHERE rn > (#{cri.pageNum} -1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="getCountByBno" resultType="int" >
+	
+		<![CDATA[
+		SELECT count(rno) FROM tbl_reply WHERE bno = #{bno}
+		]]>
+		
 	</select>
 
 </mapper>

@@ -1,0 +1,35 @@
+create table tbl_reply(
+    rno number(10,0),
+    bno number(10,0) not null,
+    reply varchar2(1000) not null,
+    replyer varchar2(50) not null,
+    replyDate date default sysdate,
+    updateDate date default sysdate
+);
+
+create sequence seq_reply;
+
+alter table tbl_reply add constraint pk_reply primary key (rno);
+
+alter table tbl_reply add constraint fk_reply_board foreign key (bno) references tbl_board (bno);
+
+commit;
+
+desc tbl_reply;
+
+SELECT * FROM col WHERE tname='TBL_REPLY';     
+
+SELECT * FROM cols WHERE table_name='TBL_REPLY';
+
+SELECT * FROM user_tab_columns WHERE table_name='TBL_REPLY';
+
+
+SELECT *
+  FROM USER_CONSTRAINTS
+ WHERE TABLE_NAME = 'TBL_REPLY';
+ 
+ 
+ SELECT * FROM tbl_board where bno>0;
+ 
+ SELECT * FROM tbl_reply order by rno desc;
+

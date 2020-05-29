@@ -78,7 +78,7 @@ public class ReplyMapperTests {
 		
 	}
 	
-	@Test
+//	@Test
 	public void testList() {
 		
 		Criteria cri = new Criteria();
@@ -87,6 +87,18 @@ public class ReplyMapperTests {
 		List<ReplyVO> replies = mapper.getListWithPaging(cri, bnoArr[0]);
 		
 		replies.forEach(reply -> log.info("---- 댓글 리스트 테스트" + reply));
+	}
+	
+	
+	@Test
+	public void testList2() {
+		
+		Criteria cri = new Criteria(1,10);
+		
+		List<ReplyVO> replies = mapper.getListWithPaging(cri, 190L);
+		
+		replies.forEach(reply -> log.info(reply));
+		
 	}
 	
 
