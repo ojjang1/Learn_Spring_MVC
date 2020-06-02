@@ -174,8 +174,12 @@
 							
 							var fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
 							
-							str += "<li><a href='/download?fileName=" + fileCallPath + "'>" 
-									+ "<img src='/resources/img/attach.png'>" + obj.fileName + "</a></li>";
+							var fileLink = fileCallPath.replace(new RegExp(/\\/g), "/" ); 
+							
+							str += "<li><div><a href='/download?fileName=" + fileCallPath + "'>" 
+									+ "<img src='/resources/img/attach.png'>" + obj.fileName + "</a>" 
+									+ "<span data-file=\'" + fileCallPath + "\' data-type='file' > x </span>"
+									+ "</div></li>";
 						} else { 
 						// str += "<li>" + obj.fileName + "</li>";
 						
@@ -185,13 +189,33 @@
 						
 						originPath = originPath.replace(new RegExp(/\\/g), "/" );
 						
-						str += "<li><a href=\"javascript:showImage(\'" + originPath + "\')\"><img src='/display?fileName="+fileCallPath+"'></a></li>";
+						str += "<li><a href=\"javascript:showImage(\'" + originPath + "\')\">" 
+								+ "<img src='/display?fileName="+fileCallPath+"'></a>" 
+								+ "<span data-file=\'" +fileCallPath + "\' data-type='image'> x </span>" 
+								+ "</li>";
 						
 						} // if-esle END
 					});  // $(uploadResultArr).each(function(i, obj) END
 							
 					uploadResult.append(str);
-				}
+				}// function showUploadedFile(uploadResultArr) END
+				
+				$(".uploadResult").on("click","span", function(e) {
+					
+					var targetFile = $(this).data("file");
+					var type = $(this).data("type");
+					console.log(targetFile);
+					
+					$.ajax({
+						url: '/deleteFile' ,
+						data: {fileName : targetFile, type: type} ,
+						dataType : 'text',
+						type: 'POST',
+						success:  function(result) {
+							alert(result);
+						}
+					}); //$.ajax
+				}); //$(".uploadResult").on("click","span", function(e) END
 				
 		});
 	
